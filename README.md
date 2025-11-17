@@ -77,24 +77,3 @@ multiagent-customer-support/
 ### 🎓 What I Learned
 
 (Will fill at the end — great for your resume)
-
----
-
-# 🎉 Step 1 is DONE when:
-
-✔ Repo created
-✔ Folders created
-✔ Placeholder files added
-✔ README skeleton added
-
----
-
-# 👉 Your Turn
-
-Please tell me:
-
-### **Did you successfully create the repo + folder structure?**
-
-If yes → we proceed to **Step 2: Build the MCP server (with code + explanation).**
-
-If no → tell me where you got stuck and I’ll walk you through the exact clicks.
