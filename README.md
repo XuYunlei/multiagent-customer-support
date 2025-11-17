@@ -40,10 +40,24 @@ This repository is part of my Applied Generative AI coursework and designed to b
 multiagent-customer-support/
 │
 ├── README.md
+│
 ├── mcp_server/
+│   ├── server.py
+│   ├── database_setup.py
+│   └── README.md (optional)
+│
 ├── agents/
+│   ├── router_agent.py
+│   ├── data_agent.py
+│   └── support_agent.py
+│
 ├── demo/
+│   ├── run_demo.py
+│   └── sample_logs.txt
+│
 └── notebooks/
+    └── HW5_demo.ipynb
+
 ```
 
 ---
