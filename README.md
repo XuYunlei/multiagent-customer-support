@@ -158,6 +158,104 @@ python extras/voice_chat.py
 
 ---
 
+## End-to-End Demonstration (A2A Coordination)
+
+Below are the outputs from running `python demo/run_demo.py`:
+
+All five scenarios demonstrate multi-step agent coordination between the **Router Agent**, **Support Agent (GPT-4o-mini)**, and **Data Agent (MCP)** using real database grounding via the MCP Server.
+
+---
+
+### ⭐ **Scenario 1 — Account Status**
+**User:** *“Hi, what's the status of my account?”*
+```
+Router → Received query
+Support Agent → action = request_data
+Data Agent → customer_id=1 found, 2 tickets retrieved
+Support Agent → action = respond
+Final Answer → "Hi John Doe, your account is currently active..."
+```
+
+---
+
+### ⭐ **Scenario 2 — Double Charge Issue**
+**User:** *“I was charged twice this month, please help!”*
+```
+Router → Received query
+Support Agent → action = request_data
+Data Agent → customer details loaded
+Support Agent → action = create_ticket
+Router → Ticket created (id=5, priority=high)
+Final Answer → Ticket summary + confirmation
+```
+
+**Final Answer Includes:**
+- ID: 5  
+- Status: open  
+- Priority: high  
+
+---
+
+### ⭐ **Scenario 3 — Multi-Intent Issue (Upgrade + Login Problem)**
+**User:** *“I want to upgrade my account and also fix my login issue.”*
+```
+Support Agent → detects multiple intents
+Support Agent → action = request_data
+Data Agent → loads 3 active tickets
+Support Agent → action = respond
+Final Answer → Addresses upgrade + login issue with prioritization
+```
+
+---
+
+### ⭐ **Scenario 4 — Retrieve All Tickets**
+**User:** *“Show me all my tickets.”*
+```
+Support Agent → action = request_data
+Data Agent → loads customer + tickets
+Support Agent → action = respond
+Final Answer → Lists all active tickets with status + priority
+```
+
+**Returned:**
+1. Double charge — Open (High)  
+2. Unable to login — Open (High)  
+3. Plan upgrade — In Progress (Medium)
+
+---
+
+### ⭐ **Scenario 5 — Update Email**
+**User:** *“Please update my email to new_email@gmail.com”*
+```
+Support Agent → action = request_data
+Data Agent → loads customer data
+Support Agent → action = respond
+Final Answer → "Your email has been successfully updated..."
+```
+
+---
+
+### ✔ Summary
+
+These scenarios demonstrate:
+
+- Multi-step reasoning  
+- Agent-to-agent coordination  
+- Tool grounding via MCP  
+- Ticket creation workflow  
+- Context-dependent responses  
+- SQLite-backed state persistence  
+
+---
+
+## **Conclusion**
+
+Throughout this project, I gained a much deeper understanding of what it means to build *true* multi-agent systems beyond simple LLM prompts. Implementing the MCP server taught me how to ground an agent’s reasoning with reliable, tool-based data access. Building the Data Agent helped me understand how to structure tool calls asynchronously and how to connect LLMs with real databases in a safe and repeatable way. Designing the Support Agent with structured JSON outputs strengthened my understanding of controlled reasoning, action planning, and multi-step workflows. The Router Agent was the most challenging piece, but it taught me how to orchestrate interactions between multiple agents in a way that mirrors real LangGraph-style architectures. This experience made agentic systems “click” for me conceptually.
+
+The biggest challenges were debugging asynchronous MCP processes, managing multiple environments, and connecting audio I/O for speech-to-speech interactions. Integrating voice input and TTS pushed me outside of simple text-only pipelines and helped me understand how multimodal agents are built in practice. I also faced several practical engineering challenges—import path issues, virtual environment conflicts, and ensuring the database persisted correctly across agent calls—but overcoming these made me a much more confident, resourceful engineer. Overall, this project gave me hands-on experience building a complete, production-style multi-agent architecture and strengthened my skills in tool grounding, orchestration, and system-level AI design.
+
+---
+
 ## Skills Demonstrated
 
 - Multi-Agent Systems  
@@ -189,5 +287,4 @@ python extras/voice_chat.py
 ## Acknowledgements  
 Course: *Applied Generative AI and Multi-Modal Intelligence*  
 University of Chicago, 2025  
-
 
