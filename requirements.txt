@@ -1,0 +1,19 @@
+fastmcp==2.13.1
+openai>=1.0.0
+python-dotenv>=1.0.0
+
+streamlit>=1.40.0
+
+sounddevice>=0.4.6
+simpleaudio>=1.0.4
+pydub>=0.25.1
+
+# For SQLite and MCP database interactions
+sqlalchemy>=2.0.0
+
+# Optional but recommended for smoother async I/O
+aiofiles>=23.0.0
+anyio>=4.0.0
+
+# Your notebook
+jupyter>=1.0.0
