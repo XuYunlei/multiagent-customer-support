@@ -120,19 +120,19 @@ MULTIAGENT-CUSTOMER-SUPPORT/
 ## Installation
 
 ### 1. Clone the repo
-```
+``` python
 git clone https://github.com/XuYunlei/multiagent-customer-support.git
 cd multiagent-customer-support
 ```
 
 ### 2. Create environment
-```
+``` python
 conda create -n mcp python=3.10 -y
 conda activate mcp
 ```
 
 ### 3. Install dependencies
-```
+``` python
 pip install -r requirements.txt
 pip install streamlit sounddevice simpleaudio pydub
 brew install ffmpeg
@@ -143,16 +143,24 @@ brew install ffmpeg
 ## How to Run
 
 ### 🔹 Test Scenarios
-```python demo/run_demo.py```
+``` python
+python demo/run_demo.py
+```
 
 ### 🔹 Interactive CLI Chat
-```python extras/chat_cli.py```
+``` python
+python extras/chat_cli.py
+```
 
 ### 🔹 Streamlit Web App
-```streamlit run extras/streamlit_app.py```
+``` python
+streamlit run extras/streamlit_app.py
+```
 
 ### 🔹 Speech-to-Speech Voice Assistant
-```python extras/voice_chat.py```
+``` python
+python extras/voice_chat.py
+```
 
 ---
 
