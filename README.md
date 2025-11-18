@@ -52,31 +52,25 @@ MULTIAGENT-CUSTOMER-SUPPORT/
 
 ## System Architecture
 
-```
-                 +------------------------------+
-                 |        User Interfaces       |
-                 |   CLI  •  Streamlit  • Voice |
-                 +---------------+--------------+
-                                 |
-                                 v
-                        +------------------+
-                        |   Router Agent   |
-                        |   (Controller)   |
-                        +--------+---------+
-                                 |
-           -----------------------------------------------
-          |                        |                      |
-          v                        v                      v
-  +---------------+      +------------------+    +--------------------+
-  | Support Agent |      |   Data Agent     |    | Ticket Generation  |
-  | (GPT-4o-mini) |      |  (MCP Client)    |    |   (create_ticket)  |
-  +---------------+      +------------------+    +--------------------+
-                                 |
-                                 v
-                      +-----------------------+
-                      |   FastMCP Server      |
-                      |   SQLite Database     |
-                      +-----------------------+
+```mermaid
+flowchart TD
+
+    UI[User Interfaces<br/>CLI • Streamlit • Voice] --> Router
+
+    Router[Router Agent<br/>Orchestrator] --> SupportAgent
+    Router --> DataAgent
+    Router --> TicketNode
+
+    SupportAgent[Support Agent<br/>GPT-4o-mini<br/>Reasoning + Action Planning]
+
+    DataAgent[Data Agent<br/>MCP Client<br/>DB Tools: get/update/list]
+
+    TicketNode[Ticket Creation Node<br/>create_ticket]
+
+    DataAgent --> MCPServer
+    TicketNode --> MCPServer
+
+    MCPServer[FastMCP Server<br/>SQLite: support.db]
 ```
 
 ---
