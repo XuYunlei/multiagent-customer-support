@@ -64,7 +64,38 @@ multiagent-customer-support/
 
 ### 🚀 How to Run
 
-(Will fill after coding)
+**1. Install the package in development mode (recommended):**
+
+```bash
+pip install -e .
+```
+
+This installs the package so you can import `agents` from anywhere without path issues.
+
+**2. Alternative: Set PYTHONPATH (if not using pip install):**
+
+```bash
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+```
+
+**3. Run the demo:**
+
+```bash
+python demo/run_demo.py
+```
+
+**4. Run individual agents:**
+
+```bash
+# Test data agent
+python -m agents.data_agent
+
+# Test support agent
+python -m agents.support_agent
+
+# Test router agent
+python -m agents.router_agent
+```
 
 ---
 
