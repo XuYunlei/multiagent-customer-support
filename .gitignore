@@ -23,7 +23,6 @@ ENV/
 Thumbs.db
 
 # Project specific
-*.db
 *.sqlite
 *.sqlite3
 support.db
