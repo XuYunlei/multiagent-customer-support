@@ -6,7 +6,7 @@ It combines **LLM reasoning**, **database-backed tools**, **MCP**, **LangGraph-s
 
 ---
 
-## 🌟 Project Overview
+## Project Overview
 
 This system simulates an intelligent customer support workflow. Three core agents collaborate to:
 
@@ -21,8 +21,9 @@ The pipeline is **grounded in a real SQLite database** via an MCP Server (FastMC
 
 ---
 
-## 🏗 Project Structure
+## Project Structure
 
+```bash
 MULTIAGENT-CUSTOMER-SUPPORT/
 ├── agents/                 # Multi-agent logic
 │   ├── data_agent.py       # MCP client
@@ -45,11 +46,13 @@ MULTIAGENT-CUSTOMER-SUPPORT/
 ├── README.md
 ├── setup.py
 └── .gitignore
+```
 
 ---
 
-## 🧠 System Architecture
+## System Architecture
 
+```
                  +------------------------------+
                  |        User Interfaces       |
                  |   CLI  •  Streamlit  • Voice |
@@ -74,18 +77,19 @@ MULTIAGENT-CUSTOMER-SUPPORT/
                       |   FastMCP Server      |
                       |   SQLite Database     |
                       +-----------------------+
+```
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🧠 Support Agent (GPT-4o-mini)
+### Support Agent (GPT-4o-mini)
 - Intent classification  
 - Multi-intent detection  
 - Action planning (respond, request_data, create_ticket)  
 - Structured JSON output for routing  
 
-### 🔌 Data Agent (MCP Client)
+### Data Agent (MCP Client)
 - Calls MCP server via StdioTransport  
 - Exposes tool functions:
   - `get_customer`
@@ -94,18 +98,18 @@ MULTIAGENT-CUSTOMER-SUPPORT/
   - `get_customer_history`
   - `create_ticket`
 
-### 🧱 MCP Server (FastMCP + SQLite)
+### MCP Server (FastMCP + SQLite)
 - Persistent storage  
 - Database-backed tool functions  
 - Deterministic grounding for LLMs  
 
-### 🔄 Router Agent (LangGraph Style)
+### Router Agent (LangGraph Style)
 - Multi-step reasoning  
 - Node-based routing  
 - Condition-driven transitions  
 - Final response synthesis  
 
-### 💬 User Interfaces
+### User Interfaces
 - CLI chat  
 - Automated HW scenario runner  
 - Streamlit web UI  
@@ -113,39 +117,46 @@ MULTIAGENT-CUSTOMER-SUPPORT/
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ### 1. Clone the repo
+```
 git clone https://github.com/XuYunlei/multiagent-customer-support.git
 cd multiagent-customer-support
+```
+
 ### 2. Create environment
+```
 conda create -n mcp python=3.10 -y
 conda activate mcp
+```
 
 ### 3. Install dependencies
+```
 pip install -r requirements.txt
 pip install streamlit sounddevice simpleaudio pydub
 brew install ffmpeg
+```
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 ### 🔹 Test Scenarios
-python demo/run_demo.py
+```python demo/run_demo.py```
 
 ### 🔹 Interactive CLI Chat
-python demo/chat_cli.py
+```python extras/chat_cli.py```
 
 ### 🔹 Streamlit Web App
-streamlit run extras/streamlit_app.py
+```streamlit run extras/streamlit_app.py```
 
 ### 🔹 Speech-to-Speech Voice Assistant
-python extras/voice_chat.py
+```python extras/voice_chat.py```
 
 ---
 
-## 🧩 Skills Demonstrated
+## Skills Demonstrated
 
 - Multi-Agent Systems  
 - Model Context Protocol (MCP)  
@@ -162,7 +173,7 @@ python extras/voice_chat.py
 
 ---
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - Multi-turn session memory  
 - Dashboard for customer & ticket management  
@@ -173,7 +184,7 @@ python extras/voice_chat.py
 
 ---
 
-## 📚 Acknowledgements  
+## Acknowledgements  
 Course: *Applied Generative AI and Multi-Modal Intelligence*  
 University of Chicago, 2025  
 
