@@ -9,7 +9,6 @@ import nest_asyncio
 import uvicorn
 import sys
 from pathlib import Path
-# Health endpoint removed - no longer needed
 
 # Add project root to path BEFORE importing agents
 project_root = Path(__file__).resolve().parents[1]
