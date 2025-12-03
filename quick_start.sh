@@ -34,7 +34,7 @@ echo ""
 
 # Start MCP server in background
 echo "1️⃣  Starting MCP Server (port 8001)..."
-python mcp/mcp_server.py > logs/mcp_server.log 2>&1 &
+python mcp_impl/mcp_server.py > logs/mcp_server.log 2>&1 &
 MCP_PID=$!
 echo "   PID: $MCP_PID"
 
@@ -42,7 +42,7 @@ sleep 2
 
 # Start A2A server in background
 echo "2️⃣  Starting A2A Server (ports 10020-10022)..."
-python a2a_server.py > logs/a2a_server.log 2>&1 &
+python agents/a2a_server.py > logs/a2a_server.log 2>&1 &
 A2A_PID=$!
 echo "   PID: $A2A_PID"
 
@@ -63,7 +63,7 @@ echo ""
 sleep 3
 
 # Run demo
-python demo.py
+python demo/demo.py
 
 echo ""
 echo "=================================="

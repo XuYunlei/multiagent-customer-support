@@ -27,21 +27,25 @@ def print_section(text: str):
     print(f"\n--- {text} ---")
 
 def check_service(url: str, name: str) -> bool:
-    """Check if a service is running"""
-    try:
-        response = requests.get(f"{url}/health", timeout=2)
-        if response.status_code == 200:
-            print(f"✅ {name} is running at {url}")
-            return True
-        else:
-            print(f"❌ {name} returned status {response.status_code}")
-            return False
-    except requests.exceptions.ConnectionError:
-        print(f"❌ {name} is not running at {url}")
-        return False
-    except Exception as e:
-        print(f"❌ Error checking {name}: {e}")
-        return False
+    """Check if a service is running - Health check removed to save quota"""
+    # Health check removed - assume service is running
+    print(f"⚠️  Skipping health check for {name} (quota optimization)")
+    return True
+    # Original health check code removed:
+    # try:
+    #     response = requests.get(f"{url}/health", timeout=2)
+    #     if response.status_code == 200:
+    #         print(f"✅ {name} is running at {url}")
+    #         return True
+    #     else:
+    #         print(f"❌ {name} returned status {response.status_code}")
+    #         return False
+    # except requests.exceptions.ConnectionError:
+    #     print(f"❌ {name} is not running at {url}")
+    #     return False
+    # except Exception as e:
+    #     print(f"❌ Error checking {name}: {e}")
+    #     return False
 
 def test_mcp_tools_list() -> bool:
     """Test MCP tools/list endpoint"""

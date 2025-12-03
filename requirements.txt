@@ -20,5 +20,13 @@ sqlalchemy>=2.0.0
 aiofiles>=23.0.0
 anyio>=4.0.0
 
-# Notebook
-jupyter>=1.0.0
+google-adk
+a2a-sdk
+mcp
+langchain
+langgraph
+langchain-core
+langchain-anthropic
+langchain-google-genai
+google-generativeai
+nest-asyncio

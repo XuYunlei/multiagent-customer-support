@@ -41,7 +41,7 @@ MULTIAGENT-CUSTOMER-SUPPORT/
 │   ├── voice_chat.py       # Speech-to-speech assistant
 │   └── server.py           # Additional server utilities
 │
-├── mcp/                    # MCP protocol implementation
+├── mcp_impl/               # MCP protocol implementation
 │   ├── mcp_client.py       # MCP HTTP client
 │   ├── mcp_server.py       # MCP HTTP server (FastAPI)
 │   └── mcp_tools.py        # MCP tool definitions
@@ -199,7 +199,7 @@ This script will:
 
 **Step 1: Start MCP Server**
 ```bash
-python mcp/mcp_server.py
+python mcp_impl/mcp_server.py
 ```
 The MCP server will run on `http://localhost:8001`
 

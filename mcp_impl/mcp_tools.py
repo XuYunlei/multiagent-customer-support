@@ -1,27 +1,23 @@
-# mcp/mcp_tools.py
+# mcp_impl/mcp_tools.py
 """
 MCP Tools for Google ADK Agents
 Wraps MCP HTTP client calls into tool functions that can be used by LLM agents
 """
-from mcp_client import MCPHTTPClient
+
+import sys
+from pathlib import Path
 from typing import List, Dict, Any
-import logging
 
-logger = logging.getLogger(__name__)
+# Add project root to path
+project_root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(project_root))
 
-# Initialize MCP client
-mcp_client = MCPHTTPClient("http://localhost:8001")
+from mcp_impl.mcp_client import MCPHTTPClient 
 
-# Initialize the connection
-try:
-    mcp_client.initialize()
-    logger.info("MCP client initialized successfully")
-except Exception as e:
-    logger.warning(f"MCP initialization failed: {e}. Tools may not work properly.")
-
+mcp_client = MCPHTTPClient(mcp_server_url="http://localhost:8001")
 
 # ==================
-# Tool Functions
+#   Tool Functions
 # ==================
 
 def get_customer(customer_id: int) -> Dict[str, Any]:
@@ -210,7 +206,7 @@ def get_customer_history(customer_id: int) -> Dict[str, Any]:
 
 
 # ======================
-# Export Tools
+#     Export Tools
 # ======================
 
 # List of all available tools for Google ADK agents
