@@ -1,12 +1,18 @@
+# demo/demo.py
 import sys
 from pathlib import Path
+import asyncio
 
-# Add project root to PYTHONPATH
+# Add project root to Python path
 project_root = Path(__file__).resolve().parents[1]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-import asyncio
+# Add agents directory to path so router_agent.py can find data_agent and support_agent
+agents_dir = project_root / "agents"
+if str(agents_dir) not in sys.path:
+    sys.path.insert(0, str(agents_dir))
+    
 from agents.router_agent import RouterAgent
 
 async def run_demo():
@@ -28,10 +34,14 @@ async def run_demo():
         print(f"\n\n====== TEST SCENARIO {i} ======")
         print(f"User Query: {query}\n")
 
-        final_answer = await router.execute(query, customer_id=1)
+        result = await router.process_query(query, customer_id=1)
 
         print("\n--- FINAL ANSWER ---")
-        print(final_answer)
+        print(result.get("response", "No response generated"))
+
+        if result.get("scenario"):
+            print(f"\n--- SCENARIO ---")
+            print(result["scenario"])
 
         print("\n------------------------------")
         print(" End of Scenario")

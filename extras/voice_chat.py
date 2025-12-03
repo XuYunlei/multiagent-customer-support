@@ -1,3 +1,4 @@
+# extras/voice_chat.py
 import sys
 from pathlib import Path
 import asyncio
@@ -9,10 +10,13 @@ import sounddevice as sd
 import simpleaudio as sa
 from openai import OpenAI
 
-# Add project root to import RouterAgent
 project_root = Path(__file__).resolve().parents[1]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
+
+agents_dir = project_root / "agents"
+if str(agents_dir) not in sys.path:
+    sys.path.insert(0, str(agents_dir))
 
 from agents.router_agent import RouterAgent
 

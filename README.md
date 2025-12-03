@@ -26,25 +26,34 @@ The pipeline is **grounded in a real SQLite database** via an MCP Server (FastMC
 ```bash
 MULTIAGENT-CUSTOMER-SUPPORT/
 ├── agents/                 # Multi-agent logic
-│   ├── data_agent.py       # MCP client
+│   ├── a2a_server.py       # Agent-to-Agent HTTP server
+│   ├── data_agent.py       # MCP HTTP client
 │   ├── router_agent.py     # LangGraph-style orchestrator
 │   └── support_agent.py    # GPT-4o-mini reasoning
 │
-├── demo/                   # Homework test cases
-│   └── run_demo.py
+├── demo/                   # Test scenarios and demos
+│   ├── demo.py             # Main demo script
+│   └── demo1.py            # Alternative demo
 │
 ├── extras/                 # Optional UI components
 │   ├── chat_cli.py         # CLI demo 
 │   ├── streamlit_app.py    # Web UI
-│   └── voice_chat.py       # Speech-to-speech assistant
+│   ├── voice_chat.py       # Speech-to-speech assistant
+│   └── server.py           # Additional server utilities
 │
-├── mcp_server/ # MCP Server + SQLite grounding
-│   ├── database_setup.py
-│   ├── server.py
-│   └── support.db # SQLite database
+├── mcp/                    # MCP protocol implementation
+│   ├── mcp_client.py       # MCP HTTP client
+│   ├── mcp_server.py       # MCP HTTP server (FastAPI)
+│   └── mcp_tools.py        # MCP tool definitions
+│
+├── src/                    # Database and setup
+│   ├── database_setup.py   # SQLite database initialization
+│   ├── support.db          # SQLite database file
+│   └── setup.py            # Setup utilities
 │
 ├── README.md
-├── setup.py
+├── requirements.txt
+├── quick_start.sh          # Quick start script
 └── .gitignore
 ```
 
@@ -57,20 +66,26 @@ flowchart TD
 
     UI[User Interfaces<br/>CLI • Streamlit • Voice] --> Router
 
-    Router[Router Agent<br/>Orchestrator] --> SupportAgent
+    Router[Router Agent<br/>Orchestrator<br/>Port 10020] --> SupportAgent
     Router --> DataAgent
     Router --> TicketNode
 
-    SupportAgent[Support Agent<br/>GPT-4o-mini<br/>Reasoning + Action Planning]
+    SupportAgent[Support Agent<br/>GPT-4o-mini<br/>Port 10022<br/>Reasoning + Action Planning]
 
-    DataAgent[Data Agent<br/>MCP Client<br/>DB Tools: get/update/list]
+    DataAgent[Data Agent<br/>MCP HTTP Client<br/>Port 10021<br/>DB Tools: get/update/list]
 
     TicketNode[Ticket Creation Node<br/>create_ticket]
 
-    DataAgent --> MCPServer
-    TicketNode --> MCPServer
+    DataAgent -->|HTTP| MCPServer
+    TicketNode -->|HTTP| MCPServer
 
-    MCPServer[FastMCP Server<br/>SQLite: support.db]
+    MCPServer[MCP HTTP Server<br/>FastAPI<br/>Port 8001<br/>SQLite: src/support.db]
+
+    A2A[A2A Server<br/>Agent-to-Agent Protocol<br/>Exposes agents as HTTP services]
+    
+    Router -.->|Optional| A2A
+    DataAgent -.->|Optional| A2A
+    SupportAgent -.->|Optional| A2A
 ```
 
 ---
@@ -83,8 +98,8 @@ flowchart TD
 - Action planning (respond, request_data, create_ticket)  
 - Structured JSON output for routing  
 
-### Data Agent (MCP Client)
-- Calls MCP server via StdioTransport  
+### Data Agent (MCP HTTP Client)
+- Calls MCP server via HTTP transport  
 - Exposes tool functions:
   - `get_customer`
   - `list_customers`
@@ -92,10 +107,22 @@ flowchart TD
   - `get_customer_history`
   - `create_ticket`
 
-### MCP Server (FastMCP + SQLite)
-- Persistent storage  
+### MCP Server (FastAPI + SQLite)
+- HTTP/SSE transport for MCP protocol
+- Persistent SQLite storage (`src/support.db`)
 - Database-backed tool functions  
-- Deterministic grounding for LLMs  
+- Deterministic grounding for LLMs
+- Compatible with MCP Inspector
+
+### A2A Server (Agent-to-Agent Protocol)
+- Exposes agents as independent HTTP services:
+  - Router Agent (port 10020)
+  - Data Agent (port 10021)
+  - Support Agent (port 10022)
+- Each agent exposes:
+  - `/.well-known/agent-card.json` - A2A metadata
+  - `/process` - Main query endpoint
+  - `/health` - Health check endpoint  
 
 ### Router Agent (LangGraph Style)
 - Multi-step reasoning  
@@ -126,33 +153,81 @@ conda activate mcp
 ```
 
 ### 3. Install dependencies
-``` python
+```bash
 pip install -r requirements.txt
-pip install streamlit sounddevice simpleaudio pydub
+```
+
+**Note:** For voice features, you may also need:
+```bash
+# macOS
 brew install ffmpeg
+
+# Linux
+sudo apt-get install ffmpeg
+```
+
+### 4. Set up environment variables
+Create a `.env` file in the project root:
+```bash
+echo 'OPENAI_API_KEY=sk-proj-your-key-here' > .env
+```
+
+### 5. Initialize database
+```bash
+python src/database_setup.py
 ```
 
 ---
 
 ## How to Run
 
-### 🔹 Test Scenarios
-``` python
-python demo/run_demo.py
+### 🚀 Quick Start (Recommended)
+The easiest way to get started is using the quick start script:
+```bash
+chmod +x quick_start.sh
+./quick_start.sh
 ```
 
-### 🔹 Interactive CLI Chat
-``` python
+This script will:
+1. Check for `.env` file
+2. Initialize the database if needed
+3. Start the MCP server (port 8001)
+4. Start the A2A server (ports 10020-10022)
+5. Run the demo
+
+### 🔹 Manual Setup
+
+**Step 1: Start MCP Server**
+```bash
+python mcp/mcp_server.py
+```
+The MCP server will run on `http://localhost:8001`
+
+**Step 2: (Optional) Start A2A Server**
+```bash
+python agents/a2a_server.py
+```
+This exposes agents as HTTP services on ports 10020-10022
+
+**Step 3: Run Demo**
+```bash
+python demo/demo.py
+```
+
+### 🔹 Other Interfaces
+
+**Interactive CLI Chat**
+```bash
 python extras/chat_cli.py
 ```
 
-### 🔹 Streamlit Web App
-``` python
+**Streamlit Web App**
+```bash
 streamlit run extras/streamlit_app.py
 ```
 
-### 🔹 Speech-to-Speech Voice Assistant
-``` python
+**Speech-to-Speech Voice Assistant**
+```bash
 python extras/voice_chat.py
 ```
 
@@ -160,9 +235,9 @@ python extras/voice_chat.py
 
 ## End-to-End Demonstration (A2A Coordination)
 
-Below are the outputs from running `python demo/run_demo.py`:
+Below are the outputs from running `python demo/demo.py`:
 
-All five scenarios demonstrate multi-step agent coordination between the **Router Agent**, **Support Agent (GPT-4o-mini)**, and **Data Agent (MCP)** using real database grounding via the MCP Server.
+All five scenarios demonstrate multi-step agent coordination between the **Router Agent**, **Support Agent (GPT-4o-mini)**, and **Data Agent (MCP)** using real database grounding via the MCP HTTP Server.
 
 ---
 
@@ -259,8 +334,9 @@ The biggest challenges were debugging asynchronous MCP processes, managing multi
 ## Skills Demonstrated
 
 - Multi-Agent Systems  
-- Model Context Protocol (MCP)  
-- FastMCP Server Development  
+- Model Context Protocol (MCP) - HTTP/SSE transport
+- FastAPI server development  
+- Agent-to-Agent (A2A) protocol
 - OpenAI GPT-4o-mini (LLM Reasoning)  
 - OpenAI Whisper (ASR)  
 - OpenAI TTS (Speech Generation)  
@@ -269,7 +345,8 @@ The biggest challenges were debugging asynchronous MCP processes, managing multi
 - Tool-grounded LLMs  
 - LangGraph-style orchestration  
 - Streamlit UI development  
-- Audio processing (sounddevice, pydub)  
+- Audio processing (sounddevice, pydub)
+- HTTP-based agent communication  
 
 ---
 

@@ -1,14 +1,18 @@
+# extras/streamlit_app.py
 import sys
 from pathlib import Path
 import asyncio
+import streamlit as st
 
 project_root = Path(__file__).resolve().parents[1]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-import streamlit as st
-from agents.router_agent import RouterAgent
+agents_dir = project_root / "agents"
+if str(agents_dir) not in sys.path:
+    sys.path.insert(0, str(agents_dir))
 
+from agents.router_agent import RouterAgent
 
 # We will keep a single RouterAgent instance in Streamlit session
 if "router" not in st.session_state:
@@ -41,7 +45,8 @@ if user_input:
 
     # Call router (async)
     async def run_router_query(query: str) -> str:
-        return await st.session_state.router.execute(query, customer_id=1)
+        result = await st.session_state.router.process_query(query, customer_id=1)
+        return result.get("response", "No response generated")
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking with multi-agent magic..."):
