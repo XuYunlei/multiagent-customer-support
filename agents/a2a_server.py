@@ -26,7 +26,6 @@ from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 
-# Now these imports will work because project_root is in sys.path
 from agents.data_agent import customer_data_agent, customer_data_agent_card
 from agents.support_agent import support_agent, support_agent_card
 from agents.router_agent import router_agent, router_agent_card
@@ -79,8 +78,6 @@ async def run_agent_server(agent, agent_card, port):
             methods = getattr(route, 'methods', ['GET'])
             print(f"   {route.path} - {methods}")
     
-    # Health endpoint removed to save quota
-
     config = uvicorn.Config(
         starlette_app,
         host='127.0.0.1',

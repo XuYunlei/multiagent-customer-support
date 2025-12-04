@@ -8,10 +8,11 @@ echo ""
 # Check if .env exists
 if [ ! -f .env ]; then
     echo "❌ Error: .env file not found!"
-    echo "Please create .env with your OPENAI_API_KEY"
+    echo "Please create .env with your GOOGLE_API_KEY (required) and optionally OPENAI_API_KEY (for voice features)"
     echo ""
     echo "Example:"
-    echo "  echo 'OPENAI_API_KEY=sk-proj-your-key-here' > .env"
+    echo "  echo 'GOOGLE_API_KEY=your-google-api-key-here' > .env"
+    echo "  echo 'OPENAI_API_KEY=sk-proj-your-key-here' >> .env  # Optional: for voice features"
     echo ""
     exit 1
 fi
@@ -28,6 +29,12 @@ fi
 
 echo "✅ Database ready"
 echo ""
+
+# Create logs directory if it doesn't exist
+if [ ! -d logs ]; then
+    mkdir -p logs
+    echo "📁 Created logs directory"
+fi
 
 echo "📋 Starting servers..."
 echo ""
@@ -64,6 +71,7 @@ sleep 3
 
 # Run demo
 python demo/demo.py
+python demo/demo1.py
 
 echo ""
 echo "=================================="

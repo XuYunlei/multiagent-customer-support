@@ -15,8 +15,7 @@ from typing import Dict, Any
 ROUTER_AGENT_URL = "http://localhost:10020"
 
 # Rate limiting: delay between requests to avoid quota limits
-# Increased to 30 seconds to avoid hitting free tier quota limits
-DELAY_BETWEEN_QUERIES = 30  # seconds - increased due to quota limits
+DELAY_BETWEEN_QUERIES = 10 
 
 async def send_a2a_message(agent_url: str, query: str) -> Dict[str, Any]:
     """
@@ -91,16 +90,16 @@ def extract_response_text(a2a_response: Dict[str, Any]) -> str:
             error_msg = error.get('message', 'Unknown error')
             # Check if it's a rate limit error
             if is_rate_limit_error(a2a_response):
-                return f"⚠️  Rate Limit Error (429): {error_msg}\n💡 Tip: Wait 30-60 seconds and try again, or upgrade your Google API quota."
+                return f"⚠️  Rate Limit Error (429): {error_msg}\n💡 Tip: Wait 10-20 seconds and try again, or upgrade your Google API quota."
             return f"Error: {error_msg}"
         else:
             if is_rate_limit_error(a2a_response):
-                return f"⚠️  Rate Limit Error (429): {error}\n💡 Tip: Wait 30-60 seconds and try again."
+                return f"⚠️  Rate Limit Error (429): {error}\n💡 Tip: Wait 10-20 seconds and try again."
             return f"Error: {error}"
     
     result = a2a_response.get("result", {})
     
-    # Check for artifacts (final response)
+    # Check for artifacts
     artifacts = result.get("artifacts", [])
     if artifacts:
         for artifact in artifacts:

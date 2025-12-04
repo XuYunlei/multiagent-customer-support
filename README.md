@@ -1,5 +1,5 @@
 # Multi-Agent Customer Support System  
-### MCP-Powered • OpenAI GPT-4o-mini • LangGraph-Style Routing • SQLite-Grounded
+### MCP-Powered • Google Gemini 2.0 Flash Lite • A2A Protocol • SQLite-Grounded
 
 This project implements a fully functional **multi-agent customer support platform** built for the Applied Generative AI course at the University of Chicago.  
 It combines **LLM reasoning**, **database-backed tools**, **MCP**, **LangGraph-style orchestration**, and **multimodal interfaces** (text + voice).
@@ -70,7 +70,7 @@ flowchart TD
     Router --> DataAgent
     Router --> TicketNode
 
-    SupportAgent[Support Agent<br/>GPT-4o-mini<br/>Port 10022<br/>Reasoning + Action Planning]
+    SupportAgent[Support Agent<br/>Gemini 2.0 Flash Lite<br/>Port 10022<br/>Reasoning + Action Planning]
 
     DataAgent[Data Agent<br/>MCP HTTP Client<br/>Port 10021<br/>DB Tools: get/update/list]
 
@@ -92,7 +92,7 @@ flowchart TD
 
 ## Features
 
-### Support Agent (GPT-4o-mini)
+### Support Agent (Gemini 2.0 Flash Lite)
 - Intent classification  
 - Multi-intent detection  
 - Action planning (respond, request_data, create_ticket)  
@@ -169,8 +169,11 @@ sudo apt-get install ffmpeg
 ### 4. Set up environment variables
 Create a `.env` file in the project root:
 ```bash
-echo 'OPENAI_API_KEY=sk-proj-your-key-here' > .env
+echo 'GOOGLE_API_KEY=your-google-api-key-here' > .env
+echo 'OPENAI_API_KEY=sk-proj-your-key-here' >> .env  # Optional: for voice features
 ```
+
+**Note:** `GOOGLE_API_KEY` is required for the Gemini agents. `OPENAI_API_KEY` is only needed if using voice features (Whisper/TTS).
 
 ### 5. Initialize database
 ```bash
@@ -193,7 +196,9 @@ This script will:
 2. Initialize the database if needed
 3. Start the MCP server (port 8001)
 4. Start the A2A server (ports 10020-10022)
-5. Run the demo
+5. Run demo scripts
+
+**Note:** The demos include a 10-second delay between queries to avoid hitting free-tier API quota limits.
 
 ### 🔹 Manual Setup
 
@@ -235,91 +240,94 @@ python extras/voice_chat.py
 
 ## End-to-End Demonstration (A2A Coordination)
 
-Below are the outputs from running `python demo/demo.py`:
+Below are the outputs from running `python demo/demo1.py` (Assignment test scenarios):
 
-All five scenarios demonstrate multi-step agent coordination between the **Router Agent**, **Support Agent (GPT-4o-mini)**, and **Data Agent (MCP)** using real database grounding via the MCP HTTP Server.
-
----
-
-### ⭐ **Scenario 1 — Account Status**
-**User:** *“Hi, what's the status of my account?”*
-```
-Router → Received query
-Support Agent → action = request_data
-Data Agent → customer_id=1 found, 2 tickets retrieved
-Support Agent → action = respond
-Final Answer → "Hi John Doe, your account is currently active..."
-```
+All five scenarios demonstrate multi-step agent coordination between the **Router Agent**, **Support Agent (Gemini 2.0 Flash Lite)**, and **Data Agent (MCP)** using real database grounding via the MCP HTTP Server.
 
 ---
 
-### ⭐ **Scenario 2 — Double Charge Issue**
-**User:** *“I was charged twice this month, please help!”*
+### ⭐ **Scenario 1 — Simple Query**
+**User:** *"Get customer information for ID 1"*
 ```
-Router → Received query
-Support Agent → action = request_data
-Data Agent → customer details loaded
-Support Agent → action = create_ticket
-Router → Ticket created (id=5, priority=high)
-Final Answer → Ticket summary + confirmation
-```
-
-**Final Answer Includes:**
-- ID: 5  
-- Status: open  
-- Priority: high  
-
----
-
-### ⭐ **Scenario 3 — Multi-Intent Issue (Upgrade + Login Problem)**
-**User:** *“I want to upgrade my account and also fix my login issue.”*
-```
-Support Agent → detects multiple intents
-Support Agent → action = request_data
-Data Agent → loads 3 active tickets
-Support Agent → action = respond
-Final Answer → Addresses upgrade + login issue with prioritization
+Router → Data Agent: get_customer(1)
+Data Agent → MCP Server: Database lookup
+Final Answer → "OK. I have the customer information for John Doe: Customer ID: 1, Name: John Doe, Email: john.doe@example.com, Phone: +1-555-0101, Status: active"
 ```
 
 ---
 
-### ⭐ **Scenario 4 — Retrieve All Tickets**
-**User:** *“Show me all my tickets.”*
+### ⭐ **Scenario 2 — Coordinated Query (Task Allocation)**
+**User:** *"I'm customer 1 and need help upgrading my account"*
 ```
-Support Agent → action = request_data
-Data Agent → loads customer + tickets
-Support Agent → action = respond
-Final Answer → Lists all active tickets with status + priority
+Router → Data Agent: Get customer context
+Router → Support Agent: Handle upgrade request
+Support Agent → Data Agent: Create ticket via MCP
+Data Agent → MCP Server: create_ticket(customer_id=1, issue="upgrading account", priority="high")
+Final Answer → "OK. I have created a high-priority ticket (ID 39) for you regarding upgrading your account."
 ```
-
-**Returned:**
-1. Double charge — Open (High)  
-2. Unable to login — Open (High)  
-3. Plan upgrade — In Progress (Medium)
 
 ---
 
-### ⭐ **Scenario 5 — Update Email**
-**User:** *“Please update my email to new_email@gmail.com”*
+### ⭐ **Scenario 3 — Complex Query (Negotiation)**
+**User:** *"Show me all active customers who have open tickets"*
 ```
-Support Agent → action = request_data
-Data Agent → loads customer data
-Support Agent → action = respond
-Final Answer → "Your email has been successfully updated..."
+Router → Data Agent: Attempts complex aggregation
+Data Agent → Router: Recognizes tool limitation
+Agents negotiate → Provide alternative solution
+Final Answer → "I am sorry, I cannot directly show you all active customers with open tickets. However, I can list all active customers and also retrieve the ticket history for individual customers if you provide their IDs."
+```
+
+---
+
+### ⭐ **Scenario 4 — Escalation**
+**User:** *"I've been charged twice, please refund immediately!"*
+```
+Router → Detects urgency keywords
+Router → Support Agent: Escalate billing issue
+Support Agent → Recognizes high-priority scenario
+Final Answer → "I understand you've been charged twice and need a refund immediately. Since this is a billing issue, I will create a high-priority ticket right away. However, I need your customer ID to proceed."
+```
+
+---
+
+### ⭐ **Scenario 5 — Multi-Intent (Multi-Step Coordination)**
+**User:** *"Update my email to newemail@example.com and show my ticket history"*
+```
+Router → Data Agent: update_customer(customer_id=1, email="newemail@example.com")
+Router → Data Agent: get_customer_history(customer_id=1)
+Data Agent → MCP Server: Parallel tool execution
+Final Answer → "Okay, I have updated the email for customer ID 1 to newemail@example.com. It seems there are no tickets associated with this customer."
 ```
 
 ---
 
 ### ✔ Summary
 
-These scenarios demonstrate:
+These scenarios demonstrate all required A2A coordination patterns:
+- **Task Allocation** (Scenario 2): Router delegates to specialist agents
+- **Negotiation** (Scenario 3): Agents coordinate when direct solutions aren't available
+- **Multi-Step Coordination** (Scenario 5): Parallel tool execution with response synthesis
+- **Tool Grounding**: All operations use MCP tools (`get_customer`, `create_ticket`, `update_customer`, `get_customer_history`)
+- **A2A Protocol**: HTTP/JSON-RPC communication with Agent Cards
+- **SQLite-Backed State**: Database maintains persistent customer and ticket state
 
-- Multi-step reasoning  
-- Agent-to-agent coordination  
-- Tool grounding via MCP  
-- Ticket creation workflow  
-- Context-dependent responses  
-- SQLite-backed state persistence  
+---
+
+## Deliverables
+
+**End-to-End Python Programs** (fulfills Assignment requirement):
+
+- **`demo/demo1.py`** - Assignment test scenarios with all 5 required queries
+- **`demo/demo.py`** - Additional basic scenarios
+- **`quick_start.sh`** - Automated setup: starts servers and runs demos
+
+**To run:**
+```bash
+./quick_start.sh
+# Or manually: python mcp_impl/mcp_server.py & python agents/a2a_server.py & python demo/demo1.py
+```
+
+All outputs are captured in terminal showing A2A flows, MCP tool calls, and final answers.
 
 ---
 
@@ -337,7 +345,7 @@ The biggest challenges were debugging asynchronous MCP processes, managing multi
 - Model Context Protocol (MCP) - HTTP/SSE transport
 - FastAPI server development  
 - Agent-to-Agent (A2A) protocol
-- OpenAI GPT-4o-mini (LLM Reasoning)  
+- Google Gemini 2.0 Flash Lite (LLM Reasoning via Google ADK)
 - OpenAI Whisper (ASR)  
 - OpenAI TTS (Speech Generation)  
 - Async Python (asyncio)  

@@ -99,7 +99,7 @@ def update_customer(
         >>> update_customer(1, email='newemail@example.com')
         {'success': True, 'message': 'Customer 1 updated'}
     """
-    # Build data dictionary with only provided fields
+    # Build data dictionary with provided fields
     data = {}
     if email is not None:
         data['email'] = email

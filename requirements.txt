@@ -8,6 +8,17 @@ pydantic>=2.0.0
 requests>=2.31.0
 streamlit>=1.40.0
 
+google-adk
+a2a-sdk
+mcp
+langchain
+langgraph
+langchain-core
+langchain-anthropic
+langchain-google-genai
+google-generativeai
+nest-asyncio
+
 # extra dependencies
 sounddevice>=0.4.6
 simpleaudio>=1.0.4
@@ -19,14 +30,3 @@ sqlalchemy>=2.0.0
 # Optional but recommended for smoother async I/O
 aiofiles>=23.0.0
 anyio>=4.0.0
-
-google-adk
-a2a-sdk
-mcp
-langchain
-langgraph
-langchain-core
-langchain-anthropic
-langchain-google-genai
-google-generativeai
-nest-asyncio
