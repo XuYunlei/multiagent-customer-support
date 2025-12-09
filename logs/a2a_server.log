@@ -1,0 +1,105 @@
+/Users/XYL/Desktop/UChicago/Q4/ADSP 32028 Applied Generative AI Agents and Multimodal Intelligence/Week 9/multiagent-customer-support/agents/router_agent.py:27: UserWarning: [EXPERIMENTAL] RemoteA2aAgent: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  remote_customer_data_agent = RemoteA2aAgent(
+/Users/XYL/Desktop/UChicago/Q4/ADSP 32028 Applied Generative AI Agents and Multimodal Intelligence/Week 9/multiagent-customer-support/agents/router_agent.py:33: UserWarning: [EXPERIMENTAL] RemoteA2aAgent: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  remote_support_agent = RemoteA2aAgent(
+/Users/XYL/Desktop/UChicago/Q4/ADSP 32028 Applied Generative AI Agents and Multimodal Intelligence/Week 9/multiagent-customer-support/agents/a2a_server.py:54: UserWarning: [EXPERIMENTAL] A2aAgentExecutorConfig: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  config = A2aAgentExecutorConfig()
+/Users/XYL/Desktop/UChicago/Q4/ADSP 32028 Applied Generative AI Agents and Multimodal Intelligence/Week 9/multiagent-customer-support/agents/a2a_server.py:55: UserWarning: [EXPERIMENTAL] A2aAgentExecutor: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  executor = A2aAgentExecutor(runner=runner, config=config)
+INFO:     Started server process [26515]
+INFO:     Waiting for application startup.
+Starting A2A Agent Servers...
+✅ Customer Data Agent starting on http://127.0.0.1:10021
+✅ Support Agent starting on http://127.0.0.1:10022
+✅ Router Agent starting on http://127.0.0.1:10020
+
+🎉 All agent servers started!
+   - Router Agent: http://127.0.0.1:10020
+   - Customer Data Agent: http://127.0.0.1:10021
+   - Support Agent: http://127.0.0.1:10022
+
+Press Ctrl+C to stop all servers.
+
+
+🔍 Available routes for customer_data_agent:
+   / - {'POST'}
+   /.well-known/agent-card.json - {'HEAD', 'GET'}
+   /.well-known/agent.json - {'HEAD', 'GET'}
+
+🔍 Available routes for support_agent:
+   / - {'POST'}
+   /.well-known/agent-card.json - {'HEAD', 'GET'}
+   /.well-known/agent.json - {'HEAD', 'GET'}
+INFO:     Started server process [26515]
+INFO:     Waiting for application startup.
+
+🔍 Available routes for router_agent:
+   / - {'POST'}
+   /.well-known/agent-card.json - {'HEAD', 'GET'}
+   /.well-known/agent.json - {'HEAD', 'GET'}
+INFO:     Started server process [26515]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Application startup complete.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:10021 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://127.0.0.1:10022 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://127.0.0.1:10020 (Press CTRL+C to quit)
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/executor/a2a_agent_executor.py:202: UserWarning: [EXPERIMENTAL] convert_a2a_request_to_agent_run_request: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  run_request = self._config.request_converter(
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/request_converter.py:115: UserWarning: [EXPERIMENTAL] convert_a2a_part_to_genai_part: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  genai_parts = part_converter(a2a_part)
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/request_converter.py:120: UserWarning: [EXPERIMENTAL] AgentRunRequest: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  return AgentRunRequest(
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/executor/a2a_agent_executor.py:235: UserWarning: [EXPERIMENTAL] TaskResultAggregator: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  task_result_aggregator = TaskResultAggregator()
+INFO:     127.0.0.1:61749 - "GET /.well-known/agent-card.json HTTP/1.1" 200 OK
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/agents/remote_a2a_agent.py:389: UserWarning: [EXPERIMENTAL] convert_genai_part_to_a2a_part: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  converted_parts = self._genai_part_converter(part)
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/tools/mcp_tool/mcp_tool.py:103: UserWarning: [EXPERIMENTAL] BaseAuthenticatedTool: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__(
+Warning: there are non-text parts in the response: ['function_call'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/executor/a2a_agent_executor.py:238: UserWarning: [EXPERIMENTAL] convert_event_to_a2a_events: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  for a2a_event in self._config.event_converter(
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/event_converter.py:564: UserWarning: [EXPERIMENTAL] convert_event_to_a2a_message: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  message = convert_event_to_a2a_message(
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/event_converter.py:396: UserWarning: [EXPERIMENTAL] convert_genai_part_to_a2a_part: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  a2a_parts = part_converter(part)
+INFO:     127.0.0.1:61749 - "POST / HTTP/1.1" 200 OK
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/event_converter.py:239: UserWarning: [EXPERIMENTAL] convert_a2a_message_to_event: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  return convert_a2a_message_to_event(
+/opt/anaconda3/envs/mcp/lib/python3.10/site-packages/google/adk/a2a/converters/event_converter.py:309: UserWarning: [EXPERIMENTAL] convert_a2a_part_to_genai_part: ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent and corresponding supporting components etc.) is in experimental mode and is subjected to breaking changes. A2A protocol and SDK arethemselves not experimental. Once it's stable enough the experimental mode will be removed. Your feedback is welcome.
+  parts = part_converter(a2a_part)
+INFO:     127.0.0.1:61757 - "GET /.well-known/agent-card.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61757 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61747 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61768 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61773 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61766 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61781 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61789 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61779 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61803 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61809 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61801 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61817 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61823 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61815 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61829 - "GET /.well-known/agent-card.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61831 - "GET /.well-known/agent-card.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61833 - "GET /.well-known/agent-card.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61817 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61823 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61835 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61847 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61853 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61845 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61860 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61865 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61858 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61886 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61891 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61884 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61900 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61908 - "POST / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61898 - "POST / HTTP/1.1" 200 OK

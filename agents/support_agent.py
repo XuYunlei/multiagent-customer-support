@@ -13,11 +13,15 @@ from a2a.types import (
     AgentSkill,
     TransportProtocol,
 )
-from mcp_impl.mcp_tools import ALL_TOOLS  
 
 # Add project root to path
 project_root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(project_root))
+
+from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
+
+# MCP Server URL
+MCP_SERVER_URL = "http://localhost:8001"
 
 # Create Google ADK Agent for customer support
 support_agent = Agent(
@@ -54,7 +58,13 @@ When responding:
 - Provide actionable solutions based on actual customer data
 - Only ask clarifying questions when absolutely necessary
 """,
-    tools=ALL_TOOLS,
+    tools=[
+        McpToolset(
+            connection_params=StreamableHTTPConnectionParams(
+                url=f"{MCP_SERVER_URL}/mcp"
+            )
+        )
+    ],
 )
 
 support_agent_card = AgentCard(

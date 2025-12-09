@@ -25,16 +25,13 @@ project_root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(project_root))
 
 from google.adk.agents import Agent
-from mcp_impl.mcp_tools import (
-    get_customer,
-    list_customers,
-    update_customer,
-    create_ticket,
-    get_customer_history,
-    ALL_TOOLS
-)
 
-# Create Google ADK Agent with MCP tools
+from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
+
+# MCP Server URL
+MCP_SERVER_URL = "http://localhost:8001"
+
+# Create Google ADK Agent with MCP Toolset
 customer_data_agent = Agent(
     name='customer_data_agent',
     model='gemini-2.0-flash-lite',
@@ -45,7 +42,7 @@ customer_data_agent = Agent(
             - Update customer information when requested
             - Create support tickets when needed
 
-            Available Tools:
+            Available MCP Tools (automatically discovered from MCP server):
             - get_customer(customer_id): Get customer information by ID
             - list_customers(status, limit): List customers by status
             - update_customer(customer_id, data): Update customer information
@@ -66,7 +63,13 @@ customer_data_agent = Agent(
             - Handle errors gracefully
             - Provide helpful error messages if data is not found
             """,
-    tools=ALL_TOOLS,
+    tools=[
+        McpToolset(
+            connection_params=StreamableHTTPConnectionParams(
+                url=f"{MCP_SERVER_URL}/mcp"
+            )
+        )
+    ],
 )
 
 customer_data_agent_card = AgentCard(

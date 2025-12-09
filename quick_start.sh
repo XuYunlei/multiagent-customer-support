@@ -45,9 +45,22 @@ python mcp_impl/mcp_server.py > logs/mcp_server.log 2>&1 &
 MCP_PID=$!
 echo "   PID: $MCP_PID"
 
-sleep 2
+# Wait for MCP server to be ready (important for MCPToolset connection)
+echo "   Waiting for MCP server to be ready..."
+for i in {1..10}; do
+    if curl -s http://localhost:8001/health > /dev/null 2>&1 || curl -s http://localhost:8001/ > /dev/null 2>&1; then
+        echo "   ✅ MCP server is ready"
+        break
+    fi
+    if [ $i -eq 10 ]; then
+        echo "   ⚠️  MCP server may not be ready, but continuing..."
+    else
+        sleep 1
+    fi
+done
 
 # Start A2A server in background
+# Note: MCPToolset will connect to MCP server when agents are initialized
 echo "2️⃣  Starting A2A Server (ports 10020-10022)..."
 python agents/a2a_server.py > logs/a2a_server.log 2>&1 &
 A2A_PID=$!

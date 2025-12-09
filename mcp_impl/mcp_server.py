@@ -11,9 +11,11 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import asyncio
+import json as json_lib
 
 # Database path relative to project root
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -406,6 +408,32 @@ async def mcp_endpoint(request: Request):
         })
 
 
+@app.get("/")
+async def sse_endpoint(request: Request):
+    """
+    SSE endpoint for MCP protocol
+    Supports Server-Sent Events for MCPToolset connection
+    """
+    async def event_stream():
+        # Send initial connection message
+        yield f"data: {json_lib.dumps({'type': 'connection', 'status': 'connected'})}\n\n"
+        
+        # Keep connection alive
+        while True:
+            await asyncio.sleep(30)  # Send keepalive every 30 seconds
+            yield f"data: {json_lib.dumps({'type': 'keepalive'})}\n\n"
+    
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
+
 @app.get("/health")
 async def health():
     """Health check endpoint"""
@@ -433,6 +461,7 @@ if __name__ == "__main__":
     print(f"Server: http://localhost:8001")
     print(f"Health: http://localhost:8001/health")
     print(f"MCP Endpoint: http://localhost:8001/mcp")
+    print(f"SSE Endpoint: http://localhost:8001/ (for SseConnectionParams)")
     print("="*80 + "\n")
     
     uvicorn.run(app, host="0.0.0.0", port=8001)

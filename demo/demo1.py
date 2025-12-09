@@ -315,11 +315,6 @@ class A2ADemo:
         print("\n" + "="*80)
         print("🚀 Multi-Agent Customer Service System - Full Demo")
         print("="*80)
-        print("⚠️  Health checks removed to save quota")
-        print("   Make sure servers are running:")
-        print("   Terminal 1: python mcp_impl/mcp_server.py")
-        print("   Terminal 2: python agents/a2a_server.py")
-        print("="*80)
         
         # Check Agent Cards (A2A protocol)
         await self.check_agent_cards()
@@ -343,19 +338,7 @@ class A2ADemo:
         # Summary
         print("\n" + "="*80)
         print("✅ ALL SCENARIOS COMPLETE!")
-        print("="*80)
-        print("\n📊 Summary:")
-        print("   • 5 test scenarios executed")
-        print("   • LLM reasoning demonstrated (Google Gemini via ADK)")
-        print("   • A2A protocol verified (Agent Cards + JSON-RPC)")
-        print("   • MCP integration working (database access)")
-        print("   • Multi-agent coordination successful")
-        print("\n🎓 Assignment Requirements Met:")
-        print("   ✅ Part 1: System Architecture (Router, Data, Support agents)")
-        print("   ✅ Part 2: MCP Integration (5 tools, HTTP transport)")
-        print("   ✅ Part 3: A2A Coordination (Agent Cards, JSON-RPC, HTTP)")
-        print("   ✅ Test Scenarios: All 5 scenarios demonstrated")
-        print("\n" + "="*80 + "\n")
+        print("="*80 + "\n")
 
 
 async def main():

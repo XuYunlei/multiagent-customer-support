@@ -99,13 +99,14 @@ flowchart TD
 - Structured JSON output for routing  
 
 ### Data Agent (MCP HTTP Client)
-- Calls MCP server via HTTP transport  
-- Exposes tool functions:
+- Uses `McpToolset` with `StreamableHTTPConnectionParams` for automatic tool discovery
+- Automatically discovers and handles MCP tools from the server:
   - `get_customer`
   - `list_customers`
   - `update_customer`
   - `get_customer_history`
   - `create_ticket`
+- No manual tool definitions required - tools are discovered dynamically
 
 ### MCP Server (FastAPI + SQLite)
 - HTTP/SSE transport for MCP protocol
